@@ -138,9 +138,9 @@ public class MapTestRunner {
                         .forks(1)
                         .mode(Mode.SingleShotTime)
                         .warmupBatchSize(TOTAL_SIZE / mapSize)
-                        .warmupIterations(10)
+                        .warmupIterations(Integer.getInteger("warmup.iteration", 10))
                         .measurementBatchSize(TOTAL_SIZE / mapSize)
-                        .measurementIterations(8)
+                        .measurementIterations(Integer.getInteger("measurement.iteration", 8))
                         .jvmArgsAppend("-Xmx30G")
                         .param("m_mapSize", Integer.toString(mapSize))
                         .param("m_className", testClass.getCanonicalName())
@@ -150,7 +150,7 @@ public class MapTestRunner {
 
                 Collection<RunResult> res = new Runner(opt).run();
                 for (RunResult rr : res) {
-                    System.out.println(testClass.getCanonicalName() + " (" + mapSize + ") = " + rr.getAggregatedResult().getPrimaryResult().getScore());
+                    System.out.println( testClass.getCanonicalName()+ " (" + mapSize + ") = " + rr.getAggregatedResult().getPrimaryResult().getScore());
                     Map<Integer, String> forClass = results.get(testClass.getCanonicalName());
                     if (forClass == null)
                         results.put(testClass.getCanonicalName(), forClass = new HashMap<>(4));
